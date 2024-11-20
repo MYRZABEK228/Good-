@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Санауды тоқтат!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e293b;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+      color: #22d3ee;
+    }
+    #currentNumber {
+      font-size: 3rem;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    button {
+      margin: 20px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2563eb;
+      color: white;
+    }
+    #score {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+    #gameOver {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Санауды тоқтат!</h1>
+  <p>Егер сан 3-ке немесе 5-ке бөлінсе, "Тоқтату" басыңыз!</p>
+  <div id="game">
+    <div id="currentNumber">0</div>
+    <button onclick="stopCount()">Тоқтату</button>
+    <p id="score">Ұпай: 0</p>
+  </div>
+  <div id="gameOver">
+    <h2>Ойын бітті!</h2>
+    <p id="finalScore"></p>
+    <button onclick="restartGame()">Қайта бастау</button>
+  </div>
+
+  <script>
+    let currentNumber = 0;
+    let score = 0;
+    let interval;
+    let isGameOver = false;
+
+    const currentNumberElement = document.getElementById("currentNumber");
+    const scoreElement = document.getElementById("score");
+    const gameElement = document.getElementById("game");
+    const gameOverElement = document.getElementById("gameOver");
+    const finalScoreElement = document.getElementById("finalScore");
+
+    function startGame() {
+      currentNumber = 0;
+      score = 0;
+      isGameOver = false;
+      gameOverElement.style.display = "none";
+      gameElement.style.display = "block";
+      scoreElement.textContent = `Ұпай: ${score}`;
+      startCounting();
+    }
+
+    function startCounting() {
+      interval = setInterval(() => {
+        if (isGameOver) return;
+        currentNumber++;
+        currentNumberElement.textContent = currentNumber;
+      }, 500);
+    }
+
+    function stopCount() {
+      if (isGameOver) return;
+
+      if (currentNumber % 3 === 0 || currentNumber % 5 === 0) {
+        score++;
+        scoreElement.textContent = `Ұпай: ${score}`;
+      } else {
+        endGame();
+      }
+    }
+
+    function endGame() {
+      isGameOver = true;
+      clearInterval(interval);
+      gameElement.style.display = "none";
+      gameOverElement.style.display = "block";
+      finalScoreElement.textContent = `Сіздің ұпайыңыз: ${score}`;
+    }
+
+    function restartGame() {
+      startGame();
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
